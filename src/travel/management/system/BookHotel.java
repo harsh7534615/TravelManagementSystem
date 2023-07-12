@@ -202,7 +202,7 @@ public class BookHotel extends JFrame implements ActionListener{
                         total += foodselected.equals("Yes")? food : 0;
                         total +=cost;
                         total = total*persons*days;
-                        labelprice.setText("Rs"+total);
+                        labelprice.setText("Rs "+total);
                     }
                     else{
                         JOptionPane.showMessageDialog(null, "Invalid Details");
@@ -214,6 +214,38 @@ public class BookHotel extends JFrame implements ActionListener{
             }
         }
         else if(ae.getSource() == bookpackage){
+            if(labelprice.getText().equals("")){
+                try{
+                    Conn c = new Conn();
+                    ResultSet rs = c.s.executeQuery("select * from hotel where name = '"+chotel.getSelectedItem()+"'");
+                    while(rs.next()){
+                        int cost = Integer.parseInt(rs.getString("costperperson"));
+                        int food = Integer.parseInt(rs.getString("foodincluded"));
+                        int ac = Integer.parseInt(rs.getString("acroom"));
+
+                        int persons = Integer.parseInt(tfpersons.getText());
+                        int days = Integer.parseInt(tfdays.getText());
+
+                        String acselected = cac.getSelectedItem();
+                        String foodselected = cfood.getSelectedItem();
+
+                        if(persons*days>0){
+                            int total = 0;
+                            total += acselected.equals("AC")? ac : 0;
+                            total += foodselected.equals("Yes")? food : 0;
+                            total +=cost;
+                            total = total*persons*days;
+                            labelprice.setText("Rs "+total);
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null, "Invalid Details");
+                        }
+
+                    }
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
             try{
                 Conn c = new Conn();
                 c.s.executeUpdate("insert into bookhotel values('"+labelusername.getText()+"', '"+chotel.getSelectedItem()+"', '"+tfpersons.getText()+"','"+tfdays.getText()+"','"+cac.getSelectedItem()+"','"+cfood.getSelectedItem()+"', '"+labelid.getText()+"', '"+labelnumber.getText()+"', '"+labelphone.getText()+"', '"+labelprice.getText()+"')");

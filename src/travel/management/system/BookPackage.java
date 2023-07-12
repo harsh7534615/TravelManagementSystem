@@ -162,6 +162,23 @@ public class BookPackage extends JFrame implements ActionListener{
             
         }
         else if(ae.getSource() == bookpackage){
+            if(labelprice.getText().equals("")){
+                String pack= cpackage.getSelectedItem();
+                int persons = Integer.parseInt(tfpersons.getText());
+                int cost=0;
+                switch (pack) {
+                    case "Gold Package" -> {
+                        cost+=12000*persons;
+                    }
+                    case "Silver Package" -> {
+                        cost+=25000*persons;
+                    }
+                    default -> {
+                        cost+=32000*persons;
+                    }
+                }
+                labelprice.setText("Rs" + cost);
+            }
             try{
                 Conn c = new Conn();
                 c.s.executeUpdate("insert into bookpackage values('"+labelusername.getText()+"', '"+cpackage.getSelectedItem()+"', '"+tfpersons.getText()+"', '"+labelid.getText()+"', '"+labelnumber.getText()+"', '"+labelphone.getText()+"', '"+labelprice.getText()+"')");
